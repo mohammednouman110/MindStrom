@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f6fbff;
+  --foreground: #081120;
+  --card: rgba(255, 255, 255, 0.72);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-display);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body), sans-serif;
+}
+
+.dark body {
+  --background: #040915;
+  --foreground: #f7fbff;
+  --card: rgba(255, 255, 255, 0.05);
+}
+
+* {
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background: rgba(34, 211, 238, 0.35);
+}
+
+a,
+button,
+input,
+textarea,
+select {
+  outline: none;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  box-shadow: 0 0 0 2px rgba(125, 211, 252, 0.6);
+  border-radius: 18px;
+}
+
+.glass-grid {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 72px 72px;
+}

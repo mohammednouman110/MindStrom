@@ -1,0 +1,58 @@
+import { Locale } from "@/lib/types";
+
+export const copy = {
+  en: {
+    brand: "MindStrom AI",
+    dashboard: "Dashboard",
+    learn: "Learn",
+    memory: "Memory",
+    assistant: "AI Tutor",
+    automations: "Automations",
+    docs: "Docs",
+    login: "Login",
+    signup: "Sign Up",
+    hero: "Adaptive learning intelligence for deep retention.",
+    voiceReady: "Voice-ready",
+    syncReady: "Sync-ready",
+    smartPlan: "Smart plan",
+    generate: "Generate learning pack",
+    uploadPdf: "Upload PDF",
+    startVoice: "Start voice input",
+    stopVoice: "Stop voice input",
+    speak: "Play voice response",
+    save: "Save",
+    dueToday: "Due today",
+    confusionMap: "Confusion heatmap",
+    workflowBuilder: "Workflow builder",
+    smartReminders: "Smart reminders",
+  },
+  hi: {
+    brand: "MindStrom AI",
+    dashboard: "डैशबोर्ड",
+    learn: "सीखें",
+    memory: "मेमोरी",
+    assistant: "एआई ट्यूटर",
+    automations: "ऑटोमेशन",
+    docs: "डॉक्स",
+    login: "लॉगिन",
+    signup: "साइन अप",
+    hero: "गहरी याददाश्त के लिए अनुकूलनशील लर्निंग इंटेलिजेंस।",
+    voiceReady: "वॉइस तैयार",
+    syncReady: "सिंक तैयार",
+    smartPlan: "स्मार्ट प्लान",
+    generate: "लर्निंग पैक बनाएं",
+    uploadPdf: "PDF अपलोड करें",
+    startVoice: "वॉइस इनपुट शुरू करें",
+    stopVoice: "वॉइस इनपुट रोकें",
+    speak: "वॉइस उत्तर चलाएं",
+    save: "सेव करें",
+    dueToday: "आज देय",
+    confusionMap: "कन्फ्यूजन हीटमैप",
+    workflowBuilder: "वर्कफ़्लो बिल्डर",
+    smartReminders: "स्मार्ट रिमाइंडर",
+  },
+} as const;
+
+export function t(locale: Locale, key: keyof typeof copy.en) {
+  return copy[locale][key] ?? copy.en[key];
+}
