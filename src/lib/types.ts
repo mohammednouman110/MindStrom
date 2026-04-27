@@ -134,3 +134,64 @@ export interface AuthPayload {
   email: string;
   password: string;
 }
+
+export interface NeuroTopic {
+  id: number;
+  name: string;
+  icon: string;
+  color: string;
+  strength: number;
+  cards: number;
+  next: string;
+  cat: string;
+}
+
+export interface NeuroFlashcard {
+  id: number;
+  topic: string;
+  tc: string;
+  q: string;
+  a: string;
+  diff: "easy" | "medium" | "hard";
+  last: string;
+  str: number;
+}
+
+export interface NeuroCurvePoint {
+  d: string;
+  ret: number;
+  no: number;
+}
+
+export interface NeuroAchievement {
+  id: number;
+  name: string;
+  desc: string;
+  icon: string;
+  unlocked: boolean;
+}
+
+export interface NeuroProfile {
+  name: string;
+  role: string;
+  xp: number;
+  xpMax: number;
+  level: number;
+  streak: number;
+  cards_reviewed: string;
+  avg_retention: string;
+  active_topics: string;
+  total_hours: string;
+}
+
+export interface NeuroHeatmapTopic {
+  concepts: string[];
+  vals: number[];
+}
+
+export type NeuroHeatmap = Record<string, NeuroHeatmapTopic>;
+
+export interface NeuroTutorMessage {
+  role: "user" | "assistant";
+  content: string;
+}

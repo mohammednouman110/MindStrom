@@ -3,8 +3,13 @@ from __future__ import annotations
 from functools import lru_cache
 from typing import Any
 
-import firebase_admin
-from firebase_admin import credentials, firestore
+try:
+    import firebase_admin
+    from firebase_admin import credentials, firestore
+except ModuleNotFoundError:  # pragma: no cover - optional local dependency
+    firebase_admin = None
+    credentials = None
+    firestore = None
 
 from app.core.config import get_settings
 
@@ -12,6 +17,9 @@ from app.core.config import get_settings
 @lru_cache
 def get_firestore_client():
     settings = get_settings()
+    if firebase_admin is None or credentials is None or firestore is None:
+        return None
+
     if not (settings.firebase_project_id and settings.firebase_client_email and settings.firebase_private_key):
         return None
 

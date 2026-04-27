@@ -1,0 +1,33 @@
+
+> mindstrom-ai@0.1.0 dev
+> next dev --hostname 127.0.0.1 --port 3000
+
+▲ Next.js 16.2.4 (Turbopack)
+- Local:         http://127.0.0.1:3000
+- Network:       http://127.0.0.1:3000
+- Environments: .env.local
+✓ Ready in 958ms
+Creating turbopack project { dir: 'C:\\Users\\nouma\\Desktop\\MindStrom', testMode: true }
+
+ GET /neuro 500 in 2.7s (next.js: 2.1s, application-code: 552ms)
+✓ Compiled in 790ms
+✓ Compiled in 248ms
+ GET /neuro 200 in 378ms (next.js: 99ms, application-code: 280ms)
+ GET /neuro 500 in 1598ms (next.js: 1400ms, application-code: 198ms)
+ GET /neuro 500 in 40ms (next.js: 28ms, application-code: 12ms)
+ GET /neuro 500 in 24ms (next.js: 12ms, application-code: 12ms)
+ GET /neuro 500 in 22ms (next.js: 11ms, application-code: 11ms)
+ GET /neuro 500 in 21ms (next.js: 10ms, application-code: 11ms)
+✓ Compiled in 306ms
+✓ Compiled in 170ms
+ GET /neuro 200 in 374ms (next.js: 89ms, application-code: 285ms)
+ GET /neuro 200 in 70ms (next.js: 7ms, application-code: 63ms)
+ GET / 200 in 343ms (next.js: 92ms, application-code: 251ms)
+ GET / 200 in 138ms (next.js: 7ms, application-code: 132ms)
+ GET /docs 200 in 382ms (next.js: 85ms, application-code: 297ms)
+ GET /automations 200 in 1328ms (next.js: 1270ms, application-code: 58ms)
+ GET /assistant 200 in 130ms (next.js: 80ms, application-code: 51ms)
+ GET /dashboard 200 in 157ms (next.js: 96ms, application-code: 61ms)
+ GET /learn 200 in 191ms (next.js: 85ms, application-code: 107ms)
+ GET /memory 200 in 123ms (next.js: 76ms, application-code: 47ms)
+ GET /assistant 200 in 82ms (next.js: 30ms, application-code: 52ms)

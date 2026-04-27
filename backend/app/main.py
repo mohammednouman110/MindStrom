@@ -4,15 +4,36 @@ from fastapi import FastAPI, File, Form, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import get_settings
-from app.schemas import AssistantRequest, AutomationRequest
-from app.services.analytics_service import dashboard_snapshot, heatmap_snapshot
-from app.services.assistant_service import build_reply_heuristically, build_reply_with_openai
+from app.schemas import (
+    AssistantRequest,
+    AutomationRequest,
+    ChatPayload,
+    ReviewPayload,
+)
+from app.services.analytics_service import (
+    dashboard_snapshot,
+    heatmap_snapshot,
+    retention_curve_data,
+)
+from app.services.assistant_service import (
+    build_reply_heuristically,
+    build_reply_with_openai,
+    build_neurotutor_reply,
+)
 from app.services.automation_service import trigger_workflow
 from app.services.firebase_service import store_event
 from app.services.learning_service import (
     build_pack_heuristically,
     build_pack_with_openai,
     extract_pdf_text,
+)
+from app.services.topic_service import (
+    get_achievements,
+    get_flashcards,
+    get_heatmap,
+    get_profile,
+    get_topics,
+    record_review,
 )
 
 settings = get_settings()
@@ -84,3 +105,47 @@ async def analytics_dashboard():
 @app.get("/api/v1/analytics/heatmap")
 async def analytics_heatmap():
     return heatmap_snapshot()
+
+
+# ── NeuroRecall endpoints ─────────────────────────────────────────
+
+@app.get("/api/v1/neuro/topics")
+async def neuro_topics():
+    return {"topics": get_topics()}
+
+
+@app.get("/api/v1/neuro/flashcards")
+async def neuro_flashcards():
+    return {"flashcards": get_flashcards()}
+
+
+@app.get("/api/v1/neuro/retention-curve")
+async def neuro_retention_curve():
+    return {"curve": retention_curve_data()}
+
+
+@app.get("/api/v1/neuro/achievements")
+async def neuro_achievements():
+    return {"achievements": get_achievements()}
+
+
+@app.get("/api/v1/neuro/profile")
+async def neuro_profile():
+    return get_profile()
+
+
+@app.get("/api/v1/neuro/heatmap")
+async def neuro_heatmap():
+    return {"heatmap": get_heatmap()}
+
+
+@app.post("/api/v1/neuro/review")
+async def neuro_review(payload: ReviewPayload):
+    counts = record_review(payload.card_id, payload.rating)
+    return {"status": "ok", "reviews": counts}
+
+
+@app.post("/api/v1/neuro/tutor-chat")
+async def neuro_tutor_chat(payload: ChatPayload):
+    reply = await build_neurotutor_reply(payload.messages, payload.history)
+    return {"reply": reply}

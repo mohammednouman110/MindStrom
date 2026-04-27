@@ -57,9 +57,10 @@ async def build_reply_with_openai(topic: str, prompt: str, mode: str, language: 
             },
             json={
                 "model": settings.openai_model,
+                "instructions": "Return valid JSON with title, response, examples, and nextSteps.",
                 "input": (
                     f"Reply in {language}. Give a {mode} explanation for topic '{topic}'. "
-                    f"User prompt: {prompt}. Return JSON with title, response, examples, nextSteps."
+                    f"User prompt: {prompt}."
                 ),
             },
         )
@@ -71,3 +72,80 @@ async def build_reply_with_openai(topic: str, prompt: str, mode: str, language: 
         if not raw_text.startswith("{"):
             return None
         return json.loads(raw_text)
+
+
+_NEURO_SYSTEM = """You are NeuroTutor, an adaptive AI tutor inside NeuroRecall AI - a spaced repetition learning app. The user is Mohammed, a BCA (Bachelor of Computer Applications) student.
+
+Their current memory strengths: JavaScript 78%, Machine Learning 45%, DevOps 62%, System Design 33%, Python 89%, React 71%.
+
+Weakest topics: System Design (33%) and Machine Learning (45%).
+
+Be concise, engaging, and supportive. Use simple analogies. When quizzing, present one question at a time and wait for the answer before revealing it. Format responses with **bold** for key terms. Suggest spaced repetition strategies when relevant."""
+
+
+async def build_neurotutor_reply(messages: list[dict], history: list[dict]) -> str:
+    settings = get_settings()
+    conversation = history or messages
+
+    if not (settings.openai_api_key and settings.openai_model):
+        last_user = next((_message_content(message) for message in reversed(conversation) if _message_role(message) == "user"), "")
+        if not last_user:
+            return (
+                "Hi Mohammed! I'm **NeuroTutor**, your AI learning companion.\n\n"
+                "I can help explain complex concepts, quiz you on weak topics, generate practice questions, and suggest revision strategies.\n\n"
+                "Your weakest areas right now are **System Design (33%)** and **Machine Learning (45%)**."
+            )
+
+        return (
+            "Let's work through that together.\n\n"
+            f"You asked: **{last_user}**\n\n"
+            "A good next step is to focus on **one idea at a time**, explain it in your own words, and then review it again after a short gap."
+        )
+
+    async with httpx.AsyncClient(timeout=40) as client:
+        response = await client.post(
+            "https://api.openai.com/v1/responses",
+            headers={
+                "Authorization": f"Bearer {settings.openai_api_key}",
+                "Content-Type": "application/json",
+            },
+            json={
+                "model": settings.openai_model,
+                "instructions": _NEURO_SYSTEM,
+                "input": _build_neuro_input(conversation),
+            },
+        )
+        response.raise_for_status()
+        payload = response.json()
+        return payload.get("output_text") or "I couldn't process that. Try again."
+
+
+def _build_neuro_input(conversation: list[dict]) -> list[dict]:
+    items: list[dict] = []
+    for message in conversation:
+        role = _message_role(message)
+        content = _message_content(message)
+        if role not in {"user", "assistant"} or not isinstance(content, str):
+            continue
+        items.append({"role": role, "content": content})
+
+    if not items:
+        items.append({"role": "user", "content": "Introduce yourself as NeuroTutor and offer help."})
+
+    return items
+
+
+def _message_role(message: object) -> str | None:
+    if isinstance(message, dict):
+        role = message.get("role")
+    else:
+        role = getattr(message, "role", None)
+    return role if isinstance(role, str) else None
+
+
+def _message_content(message: object) -> str:
+    if isinstance(message, dict):
+        content = message.get("content", "")
+    else:
+        content = getattr(message, "content", "")
+    return content if isinstance(content, str) else ""

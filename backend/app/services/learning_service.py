@@ -5,7 +5,10 @@ import json
 from typing import Any
 
 import httpx
-from pypdf import PdfReader
+try:
+    from pypdf import PdfReader
+except ModuleNotFoundError:  # pragma: no cover - optional local dependency
+    PdfReader = None
 
 from app.core.config import get_settings
 from app.schemas import LearningPack
@@ -25,6 +28,9 @@ def _normalize_points(text: str) -> list[str]:
 
 
 def extract_pdf_text(file_bytes: bytes) -> str:
+    if PdfReader is None:
+        return ""
+
     reader = PdfReader(BytesIO(file_bytes))
     pages = [page.extract_text() or "" for page in reader.pages[:6]]
     return "\n".join(pages).strip()
