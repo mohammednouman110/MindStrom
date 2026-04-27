@@ -58,6 +58,7 @@ export default function DocsPage() {
           <p>NEXT_PUBLIC_FIREBASE_API_KEY</p>
           <p>NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN</p>
           <p>NEXT_PUBLIC_FIREBASE_PROJECT_ID</p>
+          <p>NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID</p>
           <p>OPENAI_API_KEY</p>
           <p>N8N_WEBHOOK_URL</p>
         </div>
